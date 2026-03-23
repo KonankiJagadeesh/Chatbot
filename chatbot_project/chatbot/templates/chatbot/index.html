@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <style>
+        #chatBox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            width: 80%;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+    </style>
+    <script>
+        function sendMessage() {
+            let userInput = document.getElementById("userMessage").value;
+            if(userInput.trim() === "") return;
+            let chatBox = document.getElementById("chatBox");
+            chatBox.innerHTML += "<b>You:</b> " + userInput + "<br>";
+            document.getElementById("userMessage").value = "";
+
+            fetch(`/chat/?message=${encodeURIComponent(userInput)}`)
+            .then(response => response.json())
+            .then(data => {
+                chatBox.innerHTML += "<b>Bot:</b> " + data.response + "<br>";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if(event.key === "Enter") sendMessage();
+        });
+    </script>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chatBox"></div>
+    <input type="text" id="userMessage" placeholder="Type your message">
+    <button onclick="sendMessage()">Send</button>
+</body>
+</html>
