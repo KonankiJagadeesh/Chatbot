@@ -3,6 +3,8 @@ import random
 import string
 import os
 import re
+import math
+import operator
 from datetime import datetime
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -190,39 +192,102 @@ def keyword_check(text_original):
     return None
 
 # -----------------------------
+# Math Evaluator (safe)
+# -----------------------------
+# Allowed names for safe eval
+SAFE_MATH_NAMES = {
+    k: v for k, v in math.__dict__.items() if not k.startswith("_")
+}
+SAFE_MATH_NAMES.update({"abs": abs, "round": round})
+
+MATH_PATTERNS = [
+    r"^[\d\s\.\+\-\*\/\(\)\^\%]+$",            # pure expression: 2+2, (3*4)/2
+    r"(calculate|compute|solve|what is|whats)\s+([\d\s\.\+\-\*\/\(\)\^\%]+)",
+    r"(sqrt|sin|cos|tan|log|pi|pow)\s*[\(\d]",  # math functions
+    r"(\d+)\s*[\+\-\*\/]\s*(\d+)",              # simple: 5 * 10
+    r"(\d+)\s*%\s*of\s*(\d+)",                  # percent: 15% of 200
+    r"(\d+)\^(\d+)",                             # power: 2^8
+]
+
+def try_math(text):
+    """Try to evaluate a math expression. Returns result string or None."""
+    t = text.strip().lower()
+
+    # Handle "X% of Y"
+    pct = re.match(r"(\d+(?:\.\d+)?)\s*%\s*of\s*(\d+(?:\.\d+)?)", t)
+    if pct:
+        result = float(pct.group(1)) / 100 * float(pct.group(2))
+        return f"🧮 {pct.group(1)}% of {pct.group(2)} = **{result:g}**"
+
+    # Handle "X to the power of Y" / "X^Y"
+    t = re.sub(r"(\d+)\s*\^\s*(\d+)", r"pow(\1, \2)", t)
+    t = re.sub(r"to the power of", "**", t)
+    t = re.sub(r"squared", "**2", t)
+    t = re.sub(r"cubed", "**3", t)
+
+    # Strip common prefix words
+    for prefix in ["calculate", "compute", "solve", "what is", "whats"]:
+        t = re.sub(r"^" + prefix + r"\s*", "", t).strip()
+
+    # Only allow safe characters
+    if not re.match(r"^[\d\s\.\+\-\*\/\(\)\,a-z_]+$", t):
+        return None
+
+    try:
+        result = eval(t, {"__builtins__": {}}, SAFE_MATH_NAMES)  # noqa: S307
+        if isinstance(result, (int, float)):
+            formatted = f"{result:g}" if isinstance(result, float) else str(result)
+            return f"🧮 {text.strip()} = **{formatted}**"
+    except Exception:
+        pass
+    return None
+
+# -----------------------------
 # ML-based response with confidence gate
 # -----------------------------
-def get_response(text):
+def get_response(text, session_name=None):
     if not model or not vectorizer:
         return "I'm not fully loaded yet. Please refresh and try again."
 
     text_clean = text.lower().strip().translate(str.maketrans('', '', string.punctuation))
+
+    # 0. Math evaluation (highest priority for numeric expressions)
+    math_result = try_math(text)
+    if math_result:
+        return math_result
 
     # 1. Try keyword / rule-based check first (pass raw text for name detection)
     kw_response = keyword_check(text)
     if kw_response:
         return kw_response
 
+    # 2. Personalise response if we know the user's name
+    name_tag = f" {session_name}" if session_name else ""
+
     try:
         vect_text = vectorizer.transform([text_clean])
 
-        # 2. Check prediction confidence
+        # 3. Check prediction confidence
         probabilities   = model.predict_proba(vect_text)[0]
         max_confidence  = max(probabilities)
         intent          = model.classes_[probabilities.argmax()]
 
         if max_confidence < CONFIDENCE_THRESHOLD:
-            # Not confident — give a polite fallback
-            return random.choice([
+            fallback = random.choice([
                 "Hmm, I'm not quite sure about that. Could you rephrase it?",
                 "I didn't quite catch that. Can you be more specific?",
                 "That's a bit beyond me right now! Try asking something else.",
                 "I'm still learning. Could you ask that differently?",
             ])
+            return fallback + (f" By the way, I remember you, {session_name}! 😊" if session_name else "")
 
-        # 3. Return response for the predicted intent
+        # 4. Return response for the predicted intent
         if intent in intent_responses and intent_responses[intent]:
-            return random.choice(intent_responses[intent])
+            base = random.choice(intent_responses[intent])
+            # Occasionally personalise with the user's name
+            if session_name and random.random() < 0.25:  # 25% chance
+                base = base.rstrip(".") + f", {session_name}."
+            return base
         else:
             return "I'm not sure how to respond to that. Could you rephrase?"
 
@@ -243,9 +308,24 @@ def chat_api(request):
     user_message = request.GET.get("message", "")
     if not user_message or user_message.strip() == "":
         return JsonResponse({"response": "Please type something!"})
+
+    # Retrieve stored name from session
+    session_name = request.session.get("user_name", None)
+
     try:
-        bot_response = get_response(user_message)
+        bot_response = get_response(user_message, session_name=session_name)
     except Exception as e:
         print(f"chat_api error: {e}")
         bot_response = "Sorry, something went wrong on my end!"
+
+    # If a name was detected in this message, store it in session
+    detected = extract_name(user_message)
+    if detected:
+        request.session["user_name"] = detected
+
     return JsonResponse({"response": bot_response})
+
+def clear_session(request):
+    """Clears the current session (called when user clears chat)."""
+    request.session.flush()
+    return JsonResponse({"status": "ok"})
