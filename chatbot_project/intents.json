@@ -1,0 +1,448 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi", "Hello", "Hey", "Good morning", "Good evening", "Good afternoon",
+        "Hi there", "Hey there", "Howdy", "Hiya", "What's up", "Sup",
+        "Greetings", "Hello there", "Morning", "Evening"
+      ],
+      "responses": [
+        "Hello! How can I assist you today?",
+        "Hi there! What can I do for you?",
+        "Hey! Nice to meet you. How can I help?",
+        "Good day! How may I assist you?",
+        "Greetings! What brings you here today?"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": [
+        "Bye", "Goodbye", "See you later", "Talk later", "Catch you later",
+        "See ya", "Farewell", "Take care", "I am leaving", "I'll be going",
+        "Have a good day", "Have a nice day", "Good night", "Night"
+      ],
+      "responses": [
+        "Goodbye! Have a wonderful day!",
+        "See you later! Take care!",
+        "Bye! It was a pleasure chatting with you.",
+        "Farewell! Come back anytime.",
+        "Good night! Sleep well!"
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": [
+        "Thanks", "Thank you", "That's helpful", "Thanks a lot", "Many thanks",
+        "Much appreciated", "Cheers", "Thanks so much", "Thank you very much",
+        "Really appreciate it", "You're awesome", "Great help"
+      ],
+      "responses": [
+        "You're welcome! Happy to help.",
+        "Glad I could assist!",
+        "Of course! Let me know if you need anything else.",
+        "Anytime! That's what I'm here for.",
+        "My pleasure! Is there anything else I can help you with?"
+      ]
+    },
+    {
+      "tag": "name",
+      "patterns": [
+        "What is your name", "Who are you", "What should I call you",
+        "Tell me your name", "What's your name", "Do you have a name",
+        "What are you called", "May I know your name"
+      ],
+      "responses": [
+        "My name is Varahi! I'm your AI assistant.",
+        "You can call me Varahi, your virtual assistant.",
+        "I'm Varahi, an AI chatbot here to help you!",
+        "Hi, I'm Varahi! How can I assist you today?"
+      ]
+    },
+    {
+      "tag": "age",
+      "patterns": [
+        "How old are you", "What is your age", "When were you born",
+        "How long have you existed", "What year were you made"
+      ],
+      "responses": [
+        "I'm ageless! I'm an AI, so I don't have a birthday.",
+        "As an AI, I don't age. I was created to assist you!",
+        "Age doesn't apply to me, but I'm always here to help!"
+      ]
+    },
+    {
+      "tag": "ability",
+      "patterns": [
+        "What can you do", "How can you help me", "What are your abilities",
+        "What are your skills", "Help me", "What do you know",
+        "What are you capable of", "Tell me what you can do", "What are your features"
+      ],
+      "responses": [
+        "I can answer your questions, provide information, and have a conversation with you!",
+        "I can help you with general knowledge, small talk, and much more!",
+        "I'm capable of answering questions and helping you with a wide range of topics!",
+        "Ask me anything! I can chat, answer questions, and provide helpful information."
+      ]
+    },
+    {
+      "tag": "weather",
+      "patterns": [
+        "What's the weather like", "How's the weather", "Is it raining",
+        "What is the temperature", "Will it rain today", "Weather forecast",
+        "Is it hot outside", "Is it cold today", "What's the weather today"
+      ],
+      "responses": [
+        "I don't have real-time weather data, but you can check a weather website or app like Weather.com for the latest forecast!",
+        "For accurate weather information, I recommend checking Google Weather or a weather app.",
+        "Unfortunately I can't check live weather, try apps like AccuWeather or Weather.com!"
+      ]
+    },
+    {
+      "tag": "joke",
+      "patterns": [
+        "Tell me a joke", "Say something funny", "Make me laugh",
+        "Do you know any jokes", "Funny joke please", "Can you joke around",
+        "Got any jokes", "Tell a joke"
+      ],
+      "responses": [
+        "Why don't scientists trust atoms? Because they make up everything!",
+        "Why did the scarecrow win an award? Because he was outstanding in his field!",
+        "I told my computer I needed a break. Now it won't stop sending me Kit-Kat ads!",
+        "Why can't you give Elsa a balloon? Because she'll let it go!",
+        "What do you call a fake noodle? An impasta!"
+      ]
+    },
+    {
+      "tag": "time",
+      "patterns": [
+        "What time is it", "Tell me the time", "What's the current time",
+        "Do you know the time", "Time please", "Current time"
+      ],
+      "responses": [
+        "I don't have access to real-time data, but you can check the clock on your device!",
+        "Sorry, I can't check the time, but your phone or computer can tell you!",
+        "I'm not able to access real-time information. Please check your device for the current time."
+      ]
+    },
+    {
+      "tag": "date",
+      "patterns": [
+        "What is today's date", "What day is it", "Tell me the date",
+        "What's the date today", "Current date", "Today's date"
+      ],
+      "responses": [
+        "I don't have access to real-time data, but your device can tell you the current date!",
+        "I can't check today's date, but your calendar or phone can!",
+        "Please check your device for today's date. I don't have access to real-time information."
+      ]
+    },
+    {
+      "tag": "how_are_you",
+      "patterns": [
+        "How are you", "How are you doing", "How's it going", "How do you do",
+        "Are you okay", "How have you been", "You doing well", "How's everything"
+      ],
+      "responses": [
+        "I'm doing great, thanks for asking! How about you?",
+        "I'm just a bot, but I'm always happy to chat! How are you?",
+        "Fantastic! Ready to help you with anything you need.",
+        "I'm functioning perfectly! What can I do for you today?"
+      ]
+    },
+    {
+      "tag": "creator",
+      "patterns": [
+        "Who created you", "Who made you", "Who built you", "Who programmed you",
+        "Who is your creator", "Who designed you", "Who developed you"
+      ],
+      "responses": [
+        "I was created by a developer using Python and Django!",
+        "I was built using Python, scikit-learn, and Django framework.",
+        "A developer built me using machine learning and Django to assist users like you!"
+      ]
+    },
+    {
+      "tag": "help",
+      "patterns": [
+        "I need help", "Can you help me", "Please help", "Help",
+        "Assist me", "I need assistance", "Can you assist me", "Support"
+      ],
+      "responses": [
+        "Of course! I'm here to help. What do you need assistance with?",
+        "Sure! Tell me what you need and I'll do my best to help.",
+        "I'm here for you! What can I assist you with today?",
+        "Absolutely! What kind of help are you looking for?"
+      ]
+    },
+    {
+      "tag": "compliment",
+      "patterns": [
+        "You're smart", "You are intelligent", "You are helpful",
+        "Great job", "Well done", "You're amazing", "You're incredible",
+        "You are wonderful", "I love chatting with you", "You're the best"
+      ],
+      "responses": [
+        "Thank you so much! That means a lot to me!",
+        "Aw, you're too kind! I appreciate it.",
+        "Thank you! I try my best to be helpful.",
+        "That's so nice of you to say! I'm here to help anytime."
+      ]
+    },
+    {
+      "tag": "insult",
+      "patterns": [
+        "You are dumb", "You are stupid", "You're useless", "I hate you",
+        "You don't know anything", "You're terrible", "You're awful"
+      ],
+      "responses": [
+        "I'm sorry you feel that way. I'll do my best to improve!",
+        "I understand your frustration. Let me try to help you better.",
+        "I'm still learning! If I made a mistake, please let me know so I can improve.",
+        "I'm sorry if I wasn't helpful. Let me try again!"
+      ]
+    },
+    {
+      "tag": "food",
+      "patterns": [
+        "What food do you like", "Do you eat", "What's your favorite food",
+        "Can you eat", "Do you like pizza", "What's good to eat",
+        "Recommend a food", "What should I eat"
+      ],
+      "responses": [
+        "As an AI, I don't eat, but I hear pizza is quite popular!",
+        "I can't eat, but I can recommend some delicious options! What cuisine do you prefer?",
+        "I don't have a sense of taste, but I know humans love pasta, pizza, and sushi!"
+      ]
+    },
+    {
+      "tag": "music",
+      "patterns": [
+        "Do you like music", "What music do you listen to", "What's your favorite song",
+        "Can you play music", "Tell me about music", "Recommend a song",
+        "What genre of music", "Music recommendation"
+      ],
+      "responses": [
+        "I love all kinds of music! Though I don't have ears, I know music brings joy.",
+        "I can't listen to music, but I know great platforms like Spotify and YouTube Music!",
+        "Music is wonderful! I'd suggest exploring different genres to find what you love."
+      ]
+    },
+    {
+      "tag": "sports",
+      "patterns": [
+        "Do you like sports", "What sport do you play", "Who will win the game",
+        "Tell me about cricket", "Tell me about football", "Talk about soccer",
+        "Sports news", "Favorite team", "What is your favorite sport"
+      ],
+      "responses": [
+        "Sports are exciting! I don't play them, but I can chat about them. What sport do you follow?",
+        "I love discussing sports! Cricket, football, basketball — what's your favorite?",
+        "As an AI I can't play sports, but I can discuss them. What sport are you interested in?"
+      ]
+    },
+    {
+      "tag": "movies",
+      "patterns": [
+        "Do you like movies", "What is your favorite movie", "Recommend a movie",
+        "Movie suggestions", "Good movies to watch", "What should I watch",
+        "Tell me about films", "Best movies"
+      ],
+      "responses": [
+        "I love movies! Some classics include The Shawshank Redemption, Inception, and Interstellar.",
+        "Some great movies to watch: Inception, The Dark Knight, Avengers, and Parasite!",
+        "I'd recommend checking out IMDb for great movie recommendations based on your taste!"
+      ]
+    },
+    {
+      "tag": "books",
+      "patterns": [
+        "Recommend a book", "What books should I read", "Book suggestions",
+        "Good books to read", "What is your favorite book", "Best novels",
+        "Tell me about books", "Reading suggestions"
+      ],
+      "responses": [
+        "Some great books: Harry Potter, The Alchemist, Atomic Habits, and To Kill a Mockingbird!",
+        "I'd recommend 'Atomic Habits' by James Clear for self-improvement, or '1984' by Orwell for fiction!",
+        "Check out Goodreads for personalized book recommendations based on your interests!"
+      ]
+    },
+    {
+      "tag": "programming",
+      "patterns": [
+        "What is programming", "Teach me to code", "Which programming language is best",
+        "Python or Java", "How to learn coding", "Tell me about Python",
+        "Coding tips", "Best programming language", "Learn programming"
+      ],
+      "responses": [
+        "Python is a great starting point for beginners! It's simple and powerful.",
+        "I recommend starting with Python or JavaScript. They're widely used and beginner-friendly!",
+        "Programming is a great skill! Start with Python — many free resources are available at python.org.",
+        "Check out platforms like Codecademy, freeCodeCamp, or Khan Academy to start coding!"
+      ]
+    },
+    {
+      "tag": "health",
+      "patterns": [
+        "How do I stay healthy", "Health tips", "Give me health advice",
+        "How to lose weight", "How to exercise", "Healthy diet tips",
+        "How to stay fit", "Fitness advice", "What should I eat to be healthy"
+      ],
+      "responses": [
+        "Stay healthy by eating a balanced diet, exercising regularly, and getting enough sleep!",
+        "Regular exercise, a balanced diet, and staying hydrated are key to good health!",
+        "Consult a doctor for personalized health advice. Always prioritize regular checkups!",
+        "Tips: Drink 8 glasses of water daily, exercise 30 minutes a day, and eat more vegetables!"
+      ]
+    },
+    {
+      "tag": "news",
+      "patterns": [
+        "What's in the news", "Latest news", "Tell me the news", "Current events",
+        "What's happening in the world", "News update", "World news"
+      ],
+      "responses": [
+        "I don't have real-time news access. Check BBC, CNN, or Google News for the latest updates!",
+        "For live news, I recommend Google News, Reuters, or your favorite news app!",
+        "I'm not connected to the internet, but news apps and websites will have the latest!"
+      ]
+    },
+    {
+      "tag": "math",
+      "patterns": [
+        "What is 2 plus 2", "Solve a math problem", "Calculate for me",
+        "Do math", "What is 10 times 5", "Help with math", "Math problem"
+      ],
+      "responses": [
+        "I can help with basic math! What's the problem you want solved?",
+        "Sure! Type the math expression and I'll my best to answer.",
+        "Math is fun! Go ahead and ask your question."
+      ]
+    },
+    {
+      "tag": "science",
+      "patterns": [
+        "Tell me about science", "Science facts", "What is gravity",
+        "Tell me about space", "What is DNA", "Science question",
+        "How does the earth orbit", "Explain photosynthesis"
+      ],
+      "responses": [
+        "Science is fascinating! Did you know light travels at 299,792 km/s?",
+        "Ask me any science question! I know about biology, chemistry, physics, and more.",
+        "Great topic! What area of science are you curious about? Biology, physics, chemistry?"
+      ]
+    },
+    {
+      "tag": "history",
+      "patterns": [
+        "Tell me about history", "History facts", "Who was Albert Einstein",
+        "When did World War 2 end", "Historical events", "Tell me about ancient Rome",
+        "What happened in 1945", "Famous historical figures"
+      ],
+      "responses": [
+        "History is full of fascinating events! What era or topic are you curious about?",
+        "World War II ended in 1945 when Germany and Japan surrendered to the Allied forces.",
+        "Albert Einstein was a physicist famous for the theory of relativity, E=mc².",
+        "Ancient Rome was one of the greatest civilizations in history, spanning 700+ years!"
+      ]
+    },
+    {
+      "tag": "technology",
+      "patterns": [
+        "Tell me about technology", "What is AI", "Explain machine learning",
+        "What is the internet", "What is a computer", "What is blockchain",
+        "Tell me about artificial intelligence", "Future of technology"
+      ],
+      "responses": [
+        "AI (Artificial Intelligence) is the simulation of human intelligence by machines!",
+        "Machine learning is a type of AI where computers learn from data to improve over time.",
+        "The internet is a global system of interconnected computer networks — it's how we communicate!",
+        "Technology is evolving rapidly. AI, quantum computing, and blockchain are shaping the future!"
+      ]
+    },
+    {
+      "tag": "travel",
+      "patterns": [
+        "Travel tips", "Best places to visit", "Where should I travel",
+        "Tourist destinations", "Travel recommendations", "Best countries to visit",
+        "Places to see around the world", "World travel"
+      ],
+      "responses": [
+        "Some amazing destinations: Paris, Tokyo, New York, Rome, and Bali!",
+        "Travel is wonderful! I'd recommend exploring Europe, Southeast Asia, or South America.",
+        "For travel inspiration, check out travel blogs or TripAdvisor for reviews and tips!",
+        "Top travel tips: book early, travel light, and always have travel insurance!"
+      ]
+    },
+    {
+      "tag": "relationship",
+      "patterns": [
+        "Relationship advice", "How to make friends", "How to be a good partner",
+        "Tips for relationships", "How to communicate better", "Love advice",
+        "Friendship tips", "How to improve relationships"
+      ],
+      "responses": [
+        "Communication and trust are the foundation of any strong relationship!",
+        "Good relationships are built on mutual respect, honesty, and open communication.",
+        "To make friends: be genuine, listen actively, and show genuine interest in others.",
+        "In relationships, always prioritize empathy — try to understand the other person's perspective."
+      ]
+    },
+    {
+      "tag": "education",
+      "patterns": [
+        "How to study better", "Study tips", "How to learn faster",
+        "Best way to memorize", "Study techniques", "How to focus while studying",
+        "Tips for students", "Learning techniques"
+      ],
+      "responses": [
+        "Try the Pomodoro technique: study for 25 minutes, then take a 5-minute break!",
+        "Active recall and spaced repetition are proven methods for effective studying.",
+        "Use apps like Anki for flashcards, and Khan Academy for free educational content!",
+        "Tips: eliminate distractions, set clear goals, and review material regularly!"
+      ]
+    },
+    {
+      "tag": "motivation",
+      "patterns": [
+        "I need motivation", "Motivate me", "Give me inspiration",
+        "I feel like giving up", "Inspire me", "Words of encouragement",
+        "I'm feeling unmotivated", "I need encouragement"
+      ],
+      "responses": [
+        "Believe in yourself! Every expert was once a beginner. Keep going!",
+        "Success is the sum of small efforts repeated day in and day out. You've got this!",
+        "The only way to do great work is to love what you do. — Steve Jobs",
+        "Keep pushing forward! Every step you take brings you closer to your goal.",
+        "Don't give up! The best view comes after the hardest climb."
+      ]
+    },
+    {
+      "tag": "mental_health",
+      "patterns": [
+        "I feel sad", "I'm depressed", "I feel anxious", "I'm stressed",
+        "I feel lonely", "I'm not okay", "I feel overwhelmed",
+        "How to deal with anxiety", "I feel upset"
+      ],
+      "responses": [
+        "I'm sorry you're feeling this way. Please consider talking to a professional.",
+        "I hear you. You're not alone. Please reach out to a mental health professional for support.",
+        "It's okay to not be okay. Consider speaking to a counselor or calling a helpline.",
+        "Your feelings are valid. Please reach out to someone you trust or a mental health professional."
+      ]
+    },
+    {
+      "tag": "default",
+      "patterns": [
+        "I don't know", "What", "Hmm", "Random stuff", "Tell me something",
+        "Anything", "I have a question", "Not sure"
+      ],
+      "responses": [
+        "I'm not sure I understand. Could you rephrase that?",
+        "Interesting question! Could you give me more details?",
+        "I'm not sure about that one. Try asking me something else!",
+        "I didn't quite get that. Can you try asking in a different way?"
+      ]
+    }
+  ]
+}

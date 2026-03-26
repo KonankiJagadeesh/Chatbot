@@ -1,83 +1,64 @@
+import json
 import pickle
 import string
 import random
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
 
 # -----------------------------
-# Training Data
+# Load Dataset from intents.json (Kaggle-style)
 # -----------------------------
-training_data = {
-    "greeting": [
-        "hello", "hi", "hey", "good morning", "good evening",
-        "hiya", "hey there", "morning", "hi there", "hello there"
-    ],
-    "goodbye": [
-        "bye", "goodbye", "see you later", "talk to you soon",
-        "catch you later", "see ya", "farewell"
-    ],
-    "name": [
-        "what is your name", "who are you", "tell me your name",
-        "your name?", "may I know your name?"
-    ],
-    "ability": [
-        "what can you do", "how can you help", "what are your abilities",
-        "help me", "what do you know", "what are your skills"
-    ]
-}
+DATASET_PATH = os.path.join(os.path.dirname(__file__), "intents.json")
 
-# Actual responses
-intent_responses = {
-    "greeting": [
-        "Hello! How can I help you today?",
-        "Hi there! How's it going?",
-        "Hey! Nice to see you."
-    ],
-    "goodbye": [
-        "Goodbye! Have a nice day.",
-        "See you later! Take care.",
-        "Bye! Talk to you soon."
-    ],
-    "name": [
-        "I am your friendly chatbot.",
-        "You can call me Chatbot.",
-        "I am an AI assistant here to help you."
-    ],
-    "ability": [
-        "I can answer your questions and help you with tasks.",
-        "I can chat with you and provide useful information.",
-        "I can assist you in various ways, just ask me."
-    ]
-}
+print(f"Loading dataset from: {DATASET_PATH}")
+with open(DATASET_PATH, "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+intents = data["intents"]
 
 # -----------------------------
-# Preprocessing
+# Build training data and response map
 # -----------------------------
 def clean_text(text):
-    text = text.lower()
+    text = text.lower().strip()
     text = text.translate(str.maketrans('', '', string.punctuation))
     return text
 
 questions = []
 labels = []
+intent_responses = {}
 
-for intent, phrases in training_data.items():
-    for phrase in phrases:
-        questions.append(clean_text(phrase))
-        labels.append(intent)
+for intent in intents:
+    tag = intent["tag"]
+    patterns = intent["patterns"]
+    responses = intent["responses"]
+
+    # Map tag -> list of responses
+    intent_responses[tag] = responses
+
+    for pattern in patterns:
+        questions.append(clean_text(pattern))
+        labels.append(tag)
+
+print(f"Total intents: {len(intents)}")
+print(f"Total training samples: {len(questions)}")
 
 # -----------------------------
-# Convert text to numbers
+# Vectorize with TF-IDF
 # -----------------------------
-vectorizer = TfidfVectorizer()
+vectorizer = TfidfVectorizer(
+    ngram_range=(1, 2),   # Use unigrams + bigrams for better accuracy
+    max_features=5000
+)
 X = vectorizer.fit_transform(questions)
 y = labels
 
 # Split dataset (use 20% for testing)
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y, test_size=0.2, random_state=42, stratify=None
 )
 
 # -----------------------------
@@ -91,10 +72,18 @@ model.fit(X_train, y_train)
 # -----------------------------
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
-print("Model Accuracy:", accuracy * 100, "%")
+print(f"\nModel Accuracy: {accuracy * 100:.2f}%")
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred, zero_division=0))
 
 # -----------------------------
-# Save Model and Vectorizer
+# Save Model, Vectorizer, and Responses
 # -----------------------------
-pickle.dump((model, vectorizer, intent_responses), open("model.pkl", "wb"))
-print("Model saved successfully!")
+MODEL_OUTPUT = os.path.join(os.path.dirname(__file__), "chatbot", "model.pkl")
+pickle.dump((model, vectorizer, intent_responses), open(MODEL_OUTPUT, "wb"))
+print(f"\nModel saved successfully to: {MODEL_OUTPUT}")
+
+# Also save to root dir for compatibility
+ROOT_MODEL_OUTPUT = os.path.join(os.path.dirname(__file__), "model.pkl")
+pickle.dump((model, vectorizer, intent_responses), open(ROOT_MODEL_OUTPUT, "wb"))
+print(f"Model also saved to: {ROOT_MODEL_OUTPUT}")
