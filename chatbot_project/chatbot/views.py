@@ -94,27 +94,93 @@ CALENDAR_PATTERNS = [
     r"is today.*holiday",
 ]
 
-GREETING_KEYWORDS  = ["hi", "hello", "hey", "hiya", "howdy", "morning", "evening", "greetings"]
-GOODBYE_KEYWORDS   = ["bye", "goodbye", "see you", "farewell", "cya", "take care", "night"]
-THANKS_KEYWORDS    = ["thanks", "thank you", "thankyou", "cheers", "appreciated"]
+GREETING_KEYWORDS = ["hi", "hello", "hey", "hiya", "howdy", "morning", "evening", "greetings"]
+GOODBYE_KEYWORDS  = ["bye", "goodbye", "see you", "farewell", "cya", "take care", "night"]
+THANKS_KEYWORDS   = ["thanks", "thank you", "thankyou", "cheers", "appreciated"]
 
-def keyword_check(text_clean):
+# Patterns to detect when user introduces their name
+NAME_PATTERNS = [
+    r"(?:my name is|i am|i'm|call me|this is|myself)\s+([a-zA-Z]+)",
+    r"(?:hi|hello|hey)[,!]?\s+(?:i am|i'm|my name is)\s+([a-zA-Z]+)",
+    r"(?:i am|i'm)\s+([a-zA-Z]+)[,!]?\s*(?:here|speaking|here to chat)?",
+]
+
+# Common non-name words to avoid false positives
+NON_NAME_WORDS = {
+    "fine", "good", "okay", "ok", "great", "well", "bad", "sad", "happy",
+    "ready", "here", "back", "not", "sure", "yes", "no", "done", "just",
+    "so", "very", "really", "trying", "going", "coming", "looking", "thinking",
+    "learning", "working", "busy", "free", "new", "old", "lost", "confused"
+}
+
+def extract_name(text_original):
     """
-    Fast keyword matching before hitting the ML model.
+    Try to extract a person's name from the message.
+    Returns the capitalised name if found, None otherwise.
+    """
+    text_lower = text_original.lower().strip()
+
+    # Explicit introduction patterns (case-insensitive)
+    for pattern in NAME_PATTERNS:
+        match = re.search(pattern, text_lower)
+        if match:
+            name = match.group(1).capitalize()
+            if name.lower() not in NON_NAME_WORDS and len(name) > 1:
+                return name
+
+    # Single-word message that looks like a proper name
+    words = text_original.strip().split()
+    if len(words) == 1:
+        word = words[0]
+        # Proper name: starts uppercase (or all lowercase but not a known keyword)
+        if re.match(r'^[A-Za-z]{2,20}$', word):
+            word_lower = word.lower()
+            all_known_words = (
+                NON_NAME_WORDS |
+                {"hi", "hello", "hey", "bye", "okay", "thanks", "help",
+                 "what", "when", "where", "who", "why", "how", "can",
+                 "tell", "show", "give", "make", "do", "go", "run"}
+            )
+            if word_lower not in all_known_words:
+                return word.capitalize()
+
+    return None
+
+def keyword_check(text_original):
+    """
+    Fast keyword/rule matching before hitting the ML model.
     Returns a response string if matched, None otherwise.
+    text_original: the raw (uncleaned) user input
     """
-    # Calendar / date / time
+    text_clean = text_original.lower().strip().translate(
+        str.maketrans('', '', string.punctuation)
+    )
+
+    # 1. Name detection — HIGHEST PRIORITY
+    detected_name = extract_name(text_original)
+    if detected_name:
+        greetings = [
+            f"Hi {detected_name}! 👋 Nice to meet you, I'm Varahi. How can I help you today?",
+            f"Hello {detected_name}! 😊 Great to meet you! I'm Varahi, your AI assistant.",
+            f"Hey {detected_name}! 👋 Welcome! I'm Varahi. What can I do for you?",
+            f"Nice to meet you, {detected_name}! I'm Varahi. Feel free to ask me anything! 😊",
+        ]
+        return random.choice(greetings)
+
+    # 2. Calendar / date / time
     for pattern in CALENDAR_PATTERNS:
         if re.search(pattern, text_clean):
             return get_calendar_info()
 
-    # These short-word intents are easy to miss with TF-IDF
+    # 3. Short greeting keywords (avoid ML misclassifying "hi", "hey")
     words = set(text_clean.split())
     if words & {"hi", "hello", "hey", "hiya", "howdy"}:
-        if len(text_clean.split()) <= 3:  # short greetings only
+        if len(text_clean.split()) <= 3:
             return random.choice(intent_responses.get("greeting", [
                 "Hello! How can I help you today?"
             ]))
+
+    # 4. Goodbye
     if words & {"bye", "goodbye", "farewell"}:
         if len(text_clean.split()) <= 3:
             return random.choice(intent_responses.get("goodbye", [
@@ -132,8 +198,8 @@ def get_response(text):
 
     text_clean = text.lower().strip().translate(str.maketrans('', '', string.punctuation))
 
-    # 1. Try keyword / rule-based check first
-    kw_response = keyword_check(text_clean)
+    # 1. Try keyword / rule-based check first (pass raw text for name detection)
+    kw_response = keyword_check(text)
     if kw_response:
         return kw_response
 
