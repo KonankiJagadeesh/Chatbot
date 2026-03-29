@@ -25,7 +25,7 @@ except FileNotFoundError:
 # -----------------------------
 # Confidence threshold — below this, use fallback
 # -----------------------------
-CONFIDENCE_THRESHOLD = 0.30
+CONFIDENCE_THRESHOLD = 0.60
 
 # -----------------------------
 # Calendar: notable events per (month, day)
@@ -94,6 +94,10 @@ CALENDAR_PATTERNS = [
     r"calendar",
     r"any.*holiday.*today",
     r"is today.*holiday",
+    r"what is (is|today's) date",
+    r"tell me the (date|time)",
+    r"clock now",
+    r"time check",
 ]
 
 GREETING_KEYWORDS = ["hi", "hello", "hey", "hiya", "howdy", "morning", "evening", "greetings"]
@@ -207,6 +211,8 @@ MATH_PATTERNS = [
     r"(\d+)\s*[\+\-\*\/]\s*(\d+)",              # simple: 5 * 10
     r"(\d+)\s*%\s*of\s*(\d+)",                  # percent: 15% of 200
     r"(\d+)\^(\d+)",                             # power: 2^8
+    r"calculate (.*)",                           # generic calculation
+    r"solve (.*)",                               # generic solving
 ]
 
 def try_math(text):
