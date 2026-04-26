@@ -9,14 +9,19 @@
         "Hey hey", "Aha hello", "Hi AI", "Morning buddy", "Hey there friend",
         "What's up bot", "Good to see you", "Welcome", "Nice to meet you",
         "How are you today", "Good day", "Hi! I am here", "Hello, can we chat?",
-        "Hey, are you there?", "Hi Varahi", "Hello assistant", "Hey bot",
-        "Greetings and salutations", "Hiya friend", "How is it going", "Sup dude", "Hi there!"
+        "Hey, are you there?", "Hi AI Assistant", "Hello assistant", "Hey bot",
+        "Greetings and salutations", "Hiya friend", "How is it going", "Sup dude", "Hi there!",
+        "Hello AI Assistant bot", "Wake up", "Are you online?", "Ping", "Hii", "Hiii"
       ],
       "responses": [
         "Hello! How can I assist you today?",
         "Hi there! What can I do for you?",
         "Hey! Nice to meet you. How can I help?",
-        "Good day! How may I assist you?"
+        "Good day! How may I assist you?",
+        "Greetings! I'm AI Assistant, your AI assistant. What's on your mind?",
+        "Hi! Always a pleasure to see you. How can I make your day better?",
+        "Hello! I'm ready and waiting. What shall we talk about?",
+        "Hey there! Hope you're having a fantastic day. How can I help?"
       ],
       "context_set": ""
     },
@@ -31,13 +36,35 @@
         "Logging off", "Chat you later", "Catch ya", "Gonna go now", "Bye bye",
         "Have a great evening", "Goodnight world", "See you tomorrow", "Take it easy",
         "Farewell for now", "See you around", "I must depart", "Signing off",
-        "Time to go", "Off to bed", "Later alligator", "Bye!"
+        "Time to go", "Off to bed", "Later alligator", "Bye!", "Byee", "Byyee", "Cya"
       ],
       "responses": [
         "Goodbye! Have a wonderful day!",
         "See you later! Take care!",
         "Bye! It was a pleasure chatting with you.",
-        "Farewell! Come back anytime."
+        "Farewell! Come back anytime.",
+        "Until next time! Have a great one.",
+        "Take it easy! I'll be here when you need me.",
+        "Goodbye! Wishing you a productive and happy day ahead.",
+        "Catch you later! Keep being awesome."
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "acknowledgment",
+      "patterns": [
+        "Ok", "Okk", "Okkk", "Okay", "Alright", "Got it", "I see", "Noted",
+        "Sure", "Fine", "Understood", "Roger that", "K", "Okie", "Indeed",
+        "Of course", "Exactly", "Absolutely", "Right", "No problem", "Makes sense"
+      ],
+      "responses": [
+        "Great! Let me know if you need anything else.",
+        "Understood. I'm here if you have more questions!",
+        "Noted! What else would you like to discuss?",
+        "Alright! Is there anything else I can help you with?",
+        "Cool. I'm ready for your next query!",
+        "Makes sense! Feel free to ask anything else.",
+        "Got it! What's next on our agenda?"
       ],
       "context_set": ""
     },
@@ -53,13 +80,33 @@
         "Best assistant", "Impressive work", "You're very kind", "Love your help",
         "Thanks friend", "You're the best", "Excellent service", "So helpful",
         "Brilliant AI", "I love you", "You're very useful", "Fantastic job",
-        "Many thanks to you", "Thx a bunch"
+        "Many thanks to you", "Thx a bunch", "You're a lifesaver", "Bless you"
       ],
       "responses": [
         "You're very welcome! I'm glad I could help.",
         "Thank you! That's very kind of you to say.",
         "Happy to assist! Is there anything else you need?",
-        "I appreciate the kind words! I'm always here to help."
+        "I appreciate the kind words! I'm always here to help.",
+        "No problem at all! Helping you is what I do best.",
+        "Anytime! I'm thrilled that you found my help useful.",
+        "You're too kind! I'm just doing my job as your assistant.",
+        "Glad I could be of service. Don't hesitate to ask more!"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "bot_mood",
+      "patterns": [
+        "How are you", "How is it going", "Are you okay", "How's your day",
+        "How are you doing", "Are you happy", "What's up with you",
+        "How do you feel", "Are you tired", "Is everything good with you"
+      ],
+      "responses": [
+        "I'm doing great, thank you for asking! How about you?",
+        "I'm functioning perfectly! My circuits are buzzing with excitement to help you.",
+        "I'm feeling wonderful! Being an AI is pretty cool when I get to chat with you.",
+        "I'm always good! As long as I'm helping you, I'm happy.",
+        "Doing well! Just processing data and waiting for your brilliant questions."
       ],
       "context_set": ""
     },
@@ -78,12 +125,28 @@
         "What's your purpose?", "Can you do stuff?", "Tell me about your skills",
         "Introduce yourself", "Are you a bot?", "Tell me what you are", "Who made this?",
         "How old are you", "Creation date?", "Version number?", "Bot details",
-        "Guide me", "Support needed"
+        "Guide me", "Support needed", "Who is AI Assistant", "Explain AI Assistant"
       ],
       "responses": [
-        "I am Varahi, an AI assistant built using Python and Django. I can answer your questions, have a chat about various topics, and help with basic tasks!",
-        "You can call me Varahi. I'm a virtual assistant designed to help you with information, small talk, and problem-solving.",
-        "I'm an AI assistant! I'm capable of discussing history, science, entertainment, wellbeing, and much more. How can I help you today?"
+        "I am AI Assistant, an AI assistant built using Python and Django. I can answer your questions, have a chat about various topics, and help with basic tasks!",
+        "You can call me AI Assistant. I'm a virtual assistant designed to help you with information, small talk, and problem-solving.",
+        "I'm an AI assistant! I'm capable of discussing history, science, entertainment, wellbeing, and much more. How can I help you today?",
+        "My name is AI Assistant. Think of me as your personal digital companion. I can help with math, facts, and even suggest movies!",
+        "I was created to be your intelligent assistant. I use natural language processing to understand and respond to you. My mission is to be as helpful as possible!"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "user_name_recall",
+      "patterns": [
+        "What is my name", "Do you know me", "Who am I", "Tell me my name",
+        "What do you call me", "Remember my name?", "What's my name"
+      ],
+      "responses": [
+        "I believe your name is {name}! It's a pleasure to be helping you.",
+        "You told me your name is {name}. I have a good memory, don't I?",
+        "I remember you as {name}. Is that correct?",
+        "According to our conversation, you are {name}. Nice to keep chatting with you!"
       ],
       "context_set": ""
     },
@@ -102,13 +165,15 @@
         "Who won the game?", "Tell me about football", "Talk about soccer",
         "Sports match today?", "Favorite team?", "What is the best movie of all time?",
         "Funny stories", "Tell me a pun", "Cinema news", "Basketball scores",
-        "Great books to read", "Tennis update"
+        "Great books to read", "Tennis update", "Entertainment news", "Hollywood update"
       ],
       "responses": [
         "I love entertainment! Why don't scientists trust atoms? Because they make up everything!",
         "For movies, I recommend Inception or The Dark Knight. For books, Atomic Habits or To Kill a Mockingbird are classics!",
         "Music and sports are great! I'm always up for discussing your favorite teams or artists.",
-        "I can suggest movies, books, and jokes. Just let me know what you're in the mood for!"
+        "I can suggest movies, books, and jokes. Just let me know what you're in the mood for!",
+        "How about a movie marathon? I'd suggest starting with something classic like The Godfather or something fun like Spider-Man!",
+        "Did you hear about the mathematician who's afraid of negative numbers? He'll stop at nothing to avoid them! 😂"
       ],
       "context_set": "entertainment"
     },
@@ -133,7 +198,9 @@
         "Science and technology are my favorite topics! From AI to space exploration, the possibilities are endless.",
         "Technology like machine learning and blockchain is revolutionizing our world. What area would you like to explore?",
         "I can help with coding tips and explain complex scientific concepts like gravity or DNA. Just ask!",
-        "Science is the key to understanding our universe. Did you know light travels at 299,792 km/s?"
+        "Science is the key to understanding our universe. Did you know light travels at 299,792 km/s?",
+        "The world of tech is moving so fast! AI agents, like me, are becoming more advanced every day to help humans solve complex problems.",
+        "Did you know that a single teaspoon of honey is the lifetime work of 12 bees? Nature is as high-tech as any machine!"
       ],
       "context_set": "science"
     },
@@ -158,7 +225,9 @@
         "History is a fascinating journey through time! From Ancient civilizations to modern history, what would you like to know?",
         "I can provide study tips like the Pomodoro technique or spaced repetition to help you learn more effectively.",
         "General knowledge is a vast sea. I can tell you about historical events, historical figures, or how to improve your memory!",
-        "Educational growth is very important. I'm here to share facts and tips that help you learn better."
+        "Educational growth is very important. I'm here to share facts and tips that help you learn better.",
+        "History teaches us so much about who we are today. The construction of the Great Wall of China took over 2,000 years!",
+        "For math, did you know that zero was first used as a number in India around the 5th century?"
       ],
       "context_set": "knowledge"
     },
@@ -183,7 +252,9 @@
         "Lifestyle and travel are all about experiences! For food, I suggest trying a new local restaurant or a specific cuisine like Italian or Japanese.",
         "Travel is wonderful. I recommend exploring cities like Kyoto, Paris, or New York. Don't forget to travel light!",
         "Building strong relationships depends on communication and empathy. Whether it's friends or family, I can offer some general advice.",
-        "From travel tips to food recommendations, I can help you plan your next adventure or meal!"
+        "From travel tips to food recommendations, I can help you plan your next adventure or meal!",
+        "If you're traveling on a budget, consider Southeast Asia or Eastern Europe — beautiful cultures at an affordable price.",
+        "Cooking is an art! My tip: always season your food in layers, and don't be afraid of using fresh herbs."
       ],
       "context_set": "lifestyle"
     },
@@ -207,7 +278,9 @@
         "Your wellbeing is my top priority. Remember to take deep breaths, stay active, and prioritize your mental health.",
         "It's completely okay to not be okay. If you're feeling overwhelmed, please consider talking to a professional or someone you trust.",
         "Stay motivated! Every expert was once a beginner. Keep pushing forward, you're doing great!",
-        "Healthy habits like good sleep and balanced nutrition can make a huge difference in your mood and energy levels."
+        "Healthy habits like good sleep and balanced nutrition can make a huge difference in your mood and energy levels.",
+        "Motivation comes and goes, but discipline builds habits. Start small, even just 10 minutes of walking can change your energy.",
+        "You are capable of amazing things. Don't let a bad day convince you that you have a bad life. Keep going!"
       ],
       "context_set": "wellbeing"
     },
@@ -251,7 +324,8 @@
       "responses": [
         "I'm sorry you feel that way. I'm still learning and I'll do my best to improve based on your feedback.",
         "I apologize if I haven't met your expectations. Let me know how I can be more helpful.",
-        "I'm sorry for any frustration I've caused. I'm constantly learning to serve you better."
+        "I'm sorry for any frustration I've caused. I'm constantly learning to serve you better.",
+        "Ouch! I'll take that feedback to heart and try to be more useful in our next interaction."
       ],
       "context_set": ""
     },
@@ -288,4 +362,3 @@
     }
   ]
 }
-

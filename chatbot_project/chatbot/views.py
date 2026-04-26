@@ -116,7 +116,8 @@ NON_NAME_WORDS = {
     "fine", "good", "okay", "ok", "great", "well", "bad", "sad", "happy",
     "ready", "here", "back", "not", "sure", "yes", "no", "done", "just",
     "so", "very", "really", "trying", "going", "coming", "looking", "thinking",
-    "learning", "working", "busy", "free", "new", "old", "lost", "confused"
+    "learning", "working", "busy", "free", "new", "old", "lost", "confused",
+    "ok", "okk", "okay", "alright", "morning", "evening", "night", "thanks", "thank"
 }
 
 def extract_name(text_original):
@@ -131,7 +132,7 @@ def extract_name(text_original):
         match = re.search(pattern, text_lower)
         if match:
             name = match.group(1).capitalize()
-            if name.lower() not in NON_NAME_WORDS and len(name) > 1:
+            if name.lower() not in NON_NAME_WORDS and len(name) > 2:
                 return name
 
     # Single-word message that looks like a proper name
@@ -145,9 +146,11 @@ def extract_name(text_original):
                 NON_NAME_WORDS |
                 {"hi", "hello", "hey", "bye", "okay", "thanks", "help",
                  "what", "when", "where", "who", "why", "how", "can",
-                 "tell", "show", "give", "make", "do", "go", "run"}
+                 "tell", "show", "give", "make", "do", "go", "run",
+                 "byee", "byyee", "goodbye", "farewell", "cya", "night", "morning",
+                 "ok", "okk", "okay", "alright"}
             )
-            if word_lower not in all_known_words:
+            if word_lower not in all_known_words and len(word_lower) > 2:
                 return word.capitalize()
 
     return None
@@ -166,10 +169,10 @@ def keyword_check(text_original):
     detected_name = extract_name(text_original)
     if detected_name:
         greetings = [
-            f"Hi {detected_name}! 👋 Nice to meet you, I'm Varahi. How can I help you today?",
-            f"Hello {detected_name}! 😊 Great to meet you! I'm Varahi, your AI assistant.",
-            f"Hey {detected_name}! 👋 Welcome! I'm Varahi. What can I do for you?",
-            f"Nice to meet you, {detected_name}! I'm Varahi. Feel free to ask me anything! 😊",
+            f"Hi {detected_name}! 👋 Nice to meet you, I'm AI Assistant. How can I help you today?",
+            f"Hello {detected_name}! 😊 Great to meet you! I'm AI Assistant, your AI assistant.",
+            f"Hey {detected_name}! 👋 Welcome! I'm AI Assistant. What can I do for you?",
+            f"Nice to meet you, {detected_name}! I'm AI Assistant. Feel free to ask me anything! 😊",
         ]
         return random.choice(greetings)
 
@@ -182,16 +185,16 @@ def keyword_check(text_original):
     words = set(text_clean.split())
     if words & {"hi", "hello", "hey", "hiya", "howdy"}:
         if len(text_clean.split()) <= 3:
-            return random.choice(intent_responses.get("greeting", [
-                "Hello! How can I help you today?"
-            ]))
+            info = intent_responses.get("greeting", {})
+            responses = info.get("responses", ["Hello! How can I help you today?"])
+            return random.choice(responses)
 
     # 4. Goodbye
-    if words & {"bye", "goodbye", "farewell"}:
+    if words & {"bye", "goodbye", "farewell", "byee"}:
         if len(text_clean.split()) <= 3:
-            return random.choice(intent_responses.get("goodbye", [
-                "Goodbye! Have a great day!"
-            ]))
+            info = intent_responses.get("goodbye", {})
+            responses = info.get("responses", ["Goodbye! Have a great day!"])
+            return random.choice(responses)
 
     return None
 
@@ -318,14 +321,23 @@ def get_response(text, session_name=None, session_context=None):
         responses = intent_info.get("responses", [])
         new_context = intent_info.get("context_set", "")
 
-        if responses:
-            base = random.choice(responses)
-            # Occasionally personalise with the user's name
-            if session_name and random.random() < 0.25:  # 25% chance
-                base = base.rstrip(".") + f", {session_name}."
-            return base, new_context
-        else:
+        if not responses:
             return "I'm not sure how to respond to that. Could you rephrase?", session_context
+
+        raw_response = random.choice(responses)
+        
+        # Detect if we should use name recall formatting
+        try:
+            display_name = session_name if session_name else "friend"
+            final_response = raw_response.format(name=display_name)
+        except (KeyError, IndexError):
+            final_response = raw_response
+
+        # Occasionally personalize even without explicit placeholder
+        if session_name and "{name}" not in raw_response and random.random() < 0.2:
+            final_response = final_response.rstrip(".") + f", {session_name}."
+
+        return final_response, new_context
 
     except Exception as e:
         print(f"Error in get_response: {e}")

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Varahi - AI Chatbot</title>
+    <title>AI Assistant - AI Chatbot</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* ── Theme Definitions ── */
@@ -192,7 +192,7 @@
         <div class="chat-header">
             <div class="header-left">
                 <div class="online-status"></div>
-                <div class="header-title">Varahi</div>
+                <div class="header-title">AI Assistant</div>
             </div>
             <div class="header-actions">
                 <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)">
@@ -215,7 +215,7 @@
         <!-- Messages Area -->
         <div class="chat-messages" id="msgs">
             <div class="msg-wrap bot">
-                <div class="bubble">Hi! I'm Varahi. How can I assist you today? 😊</div>
+                <div class="bubble">Hi! I'm AI Assistant. How can I assist you today? 😊</div>
                 <div class="time" id="startTime"></div>
             </div>
             
@@ -254,7 +254,7 @@
         const micBtn = document.getElementById('micBtn');
 
         let isVoiceEnabled = true; // DEFAULT ON as requested
-        let chatHistory = ["Varahi: Hi! I'm Varahi. How can I assist you today?"];
+        let chatHistory = ["AI Assistant: Hi! I'm AI Assistant. How can I assist you today?"];
         let recognition;
         let isRecording = false;
 
@@ -332,7 +332,7 @@
             wrap.appendChild(time);
             msgs.insertBefore(wrap, typing);
             
-            chatHistory.push(`${side === 'user' ? 'You' : 'Varahi'}: ${text}`);
+            chatHistory.push(`${side === 'user' ? 'You' : 'AI Assistant'}: ${text}`);
             
             if (side === 'bot' && isVoiceEnabled) speak(text);
             
@@ -393,7 +393,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Varahi_Chat_${new Date().toLocaleDateString()}.txt`;
+            a.download = `AI Assistant_Chat_${new Date().toLocaleDateString()}.txt`;
             a.click();
             URL.revokeObjectURL(url);
         }
