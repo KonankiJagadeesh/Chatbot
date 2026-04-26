@@ -73,9 +73,15 @@ def prepare_data(intents):
         tag = intent["tag"]
         patterns = intent["patterns"]
         responses = intent["responses"]
+        context_set = intent.get("context_set", "")
+        context_filter = intent.get("context_filter", "")
 
-        # Map tag -> list of responses
-        intent_responses[tag] = responses
+        # Map tag -> comprehensive data
+        intent_responses[tag] = {
+            "responses": responses,
+            "context_set": context_set,
+            "context_filter": context_filter
+        }
 
         for pattern in patterns:
             cleaned_pattern = clean_text(pattern)

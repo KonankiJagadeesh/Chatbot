@@ -17,7 +17,8 @@
         "Hi there! What can I do for you?",
         "Hey! Nice to meet you. How can I help?",
         "Good day! How may I assist you?"
-      ]
+      ],
+      "context_set": ""
     },
     {
       "tag": "goodbye",
@@ -37,7 +38,8 @@
         "See you later! Take care!",
         "Bye! It was a pleasure chatting with you.",
         "Farewell! Come back anytime."
-      ]
+      ],
+      "context_set": ""
     },
     {
       "tag": "politeness_praise",
@@ -58,7 +60,8 @@
         "Thank you! That's very kind of you to say.",
         "Happy to assist! Is there anything else you need?",
         "I appreciate the kind words! I'm always here to help."
-      ]
+      ],
+      "context_set": ""
     },
     {
       "tag": "bot_capabilities",
@@ -81,7 +84,8 @@
         "I am Varahi, an AI assistant built using Python and Django. I can answer your questions, have a chat about various topics, and help with basic tasks!",
         "You can call me Varahi. I'm a virtual assistant designed to help you with information, small talk, and problem-solving.",
         "I'm an AI assistant! I'm capable of discussing history, science, entertainment, wellbeing, and much more. How can I help you today?"
-      ]
+      ],
+      "context_set": ""
     },
     {
       "tag": "entertainment",
@@ -105,7 +109,8 @@
         "For movies, I recommend Inception or The Dark Knight. For books, Atomic Habits or To Kill a Mockingbird are classics!",
         "Music and sports are great! I'm always up for discussing your favorite teams or artists.",
         "I can suggest movies, books, and jokes. Just let me know what you're in the mood for!"
-      ]
+      ],
+      "context_set": "entertainment"
     },
     {
       "tag": "science_technology",
@@ -129,7 +134,8 @@
         "Technology like machine learning and blockchain is revolutionizing our world. What area would you like to explore?",
         "I can help with coding tips and explain complex scientific concepts like gravity or DNA. Just ask!",
         "Science is the key to understanding our universe. Did you know light travels at 299,792 km/s?"
-      ]
+      ],
+      "context_set": "science"
     },
     {
       "tag": "general_knowledge",
@@ -153,7 +159,8 @@
         "I can provide study tips like the Pomodoro technique or spaced repetition to help you learn more effectively.",
         "General knowledge is a vast sea. I can tell you about historical events, historical figures, or how to improve your memory!",
         "Educational growth is very important. I'm here to share facts and tips that help you learn better."
-      ]
+      ],
+      "context_set": "knowledge"
     },
     {
       "tag": "lifestyle_travel",
@@ -177,7 +184,8 @@
         "Travel is wonderful. I recommend exploring cities like Kyoto, Paris, or New York. Don't forget to travel light!",
         "Building strong relationships depends on communication and empathy. Whether it's friends or family, I can offer some general advice.",
         "From travel tips to food recommendations, I can help you plan your next adventure or meal!"
-      ]
+      ],
+      "context_set": "lifestyle"
     },
     {
       "tag": "wellbeing_advice",
@@ -200,7 +208,8 @@
         "It's completely okay to not be okay. If you're feeling overwhelmed, please consider talking to a professional or someone you trust.",
         "Stay motivated! Every expert was once a beginner. Keep pushing forward, you're doing great!",
         "Healthy habits like good sleep and balanced nutrition can make a huge difference in your mood and energy levels."
-      ]
+      ],
+      "context_set": "wellbeing"
     },
     {
       "tag": "realtime_dynamic",
@@ -222,7 +231,8 @@
         "For real-time weather and news, I recommend checking a live dashboard or your favorite news app. I don't have a direct live link!",
         "Your device should have the most accurate current time and date. Is there something specific in the news you want to discuss?",
         "I can't provide live data, but I can discuss the *concepts* of news and weather with you! For the latest, check a news website."
-      ]
+      ],
+      "context_set": ""
     },
     {
       "tag": "insult_negative",
@@ -242,7 +252,40 @@
         "I'm sorry you feel that way. I'm still learning and I'll do my best to improve based on your feedback.",
         "I apologize if I haven't met your expectations. Let me know how I can be more helpful.",
         "I'm sorry for any frustration I've caused. I'm constantly learning to serve you better."
-      ]
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "science_followup",
+      "patterns": [
+        "Tell me more", "Explain that deeper", "What else can you tell me?",
+        "Go on", "Continue", "Give me more details", "Keep telling me",
+        "More about science", "Tell me another fact", "Tell me more science"
+      ],
+      "responses": [
+        "Did you know that science is all about curiosity? For example, the human body is made up of trillions of tiny cells, each with a special job!",
+        "Science is everywhere! From the apps on your phone to the stars in the night sky, it's all part of a fascinating system.",
+        "Technology is advancing faster than ever. AI, for instance, is helping doctors find diseases earlier and making our lives easier."
+      ],
+      "context_filter": "science",
+      "context_set": "science"
+    },
+    {
+      "tag": "entertainment_followup",
+      "patterns": [
+        "Another one", "One more joke", "Tell me more about movies",
+        "What else is funny?", "More movie suggestions", "Tell me another joke",
+        "Next joke", "Another joke please", "More entertainment", "One more",
+        "Another", "Next"
+      ],
+      "responses": [
+        "Sure! Here's another: Why did the computer show up late to work? It had a hard drive! 😂",
+        "If you liked Inception, you might also enjoy Interstellar or Shutter Island. They are mind-bending classics!",
+        "Talking about music, did you know that listening to upbeat music can actually improve your mood and productivity?"
+      ],
+      "context_filter": "entertainment",
+      "context_set": "entertainment"
     }
   ]
 }
+

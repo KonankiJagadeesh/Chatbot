@@ -251,55 +251,85 @@ def try_math(text):
 # -----------------------------
 # ML-based response with confidence gate
 # -----------------------------
-def get_response(text, session_name=None):
+def get_response(text, session_name=None, session_context=None):
     if not model or not vectorizer:
-        return "I'm not fully loaded yet. Please refresh and try again."
+        return "I'm not fully loaded yet. Please refresh and try again.", ""
 
     text_clean = text.lower().strip().translate(str.maketrans('', '', string.punctuation))
 
     # 0. Math evaluation (highest priority for numeric expressions)
     math_result = try_math(text)
     if math_result:
-        return math_result
+        return math_result, ""
 
     # 1. Try keyword / rule-based check first (pass raw text for name detection)
     kw_response = keyword_check(text)
     if kw_response:
-        return kw_response
-
-    # 2. Personalise response if we know the user's name
-    name_tag = f" {session_name}" if session_name else ""
+        return kw_response, ""
 
     try:
         vect_text = vectorizer.transform([text_clean])
 
-        # 3. Check prediction confidence
-        probabilities   = model.predict_proba(vect_text)[0]
-        max_confidence  = max(probabilities)
-        intent          = model.classes_[probabilities.argmax()]
+        # 3. Get prediction probabilities
+        probabilities = model.predict_proba(vect_text)[0]
+        
+        # 4. Filter and weigh intents based on context
+        best_intent = None
+        max_score = -1
+        
+        for i, intent_tag in enumerate(model.classes_):
+            score = probabilities[i]
+            intent_info = intent_responses.get(intent_tag, {})
+            
+            # Boost score if intent matches current context
+            expected_context = intent_info.get("context_filter", "")
+            if expected_context:
+                if session_context == expected_context:
+                    # Very aggressive boost for matched context
+                    score += 1.0  
+                else:
+                    # Heavy penalty for context-mismatched follow-up intents
+                    score -= 1.0
+            
+            if score > max_score:
+                max_score = score
+                best_intent = intent_tag
 
-        if max_confidence < CONFIDENCE_THRESHOLD:
+        # Final confidence check
+        # We allow a lower threshold (0.35) if the score was boosted significantly by context
+        final_threshold = CONFIDENCE_THRESHOLD
+        intent_info = intent_responses.get(best_intent, {})
+        is_contextual = session_context and intent_info.get("context_filter") == session_context
+        
+        if is_contextual:
+            final_threshold = 0.35 # Much lower threshold for context-boosted matches
+
+        if best_intent is None or max_score < final_threshold:
             fallback = random.choice([
                 "Hmm, I'm not quite sure about that. Could you rephrase it?",
                 "I didn't quite catch that. Can you be more specific?",
                 "That's a bit beyond me right now! Try asking something else.",
                 "I'm still learning. Could you ask that differently?",
             ])
-            return fallback + (f" By the way, I remember you, {session_name}! 😊" if session_name else "")
+            msg = fallback + (f" By the way, I remember you, {session_name}! 😊" if session_name else "")
+            return msg, (session_context if session_context else "")
 
-        # 4. Return response for the predicted intent
-        if intent in intent_responses and intent_responses[intent]:
-            base = random.choice(intent_responses[intent])
+        # 5. Return response for the predicted intent
+        responses = intent_info.get("responses", [])
+        new_context = intent_info.get("context_set", "")
+
+        if responses:
+            base = random.choice(responses)
             # Occasionally personalise with the user's name
             if session_name and random.random() < 0.25:  # 25% chance
                 base = base.rstrip(".") + f", {session_name}."
-            return base
+            return base, new_context
         else:
-            return "I'm not sure how to respond to that. Could you rephrase?"
+            return "I'm not sure how to respond to that. Could you rephrase?", session_context
 
     except Exception as e:
         print(f"Error in get_response: {e}")
-        return "Sorry, I encountered an error. Please try again."
+        return "Sorry, I encountered an error. Please try again.", ""
 
 # -----------------------------
 # View for index page
@@ -315,11 +345,18 @@ def chat_api(request):
     if not user_message or user_message.strip() == "":
         return JsonResponse({"response": "Please type something!"})
 
-    # Retrieve stored name from session
+    # Retrieve stored name and context from session
     session_name = request.session.get("user_name", None)
+    session_context = request.session.get("user_context", "")
 
     try:
-        bot_response = get_response(user_message, session_name=session_name)
+        bot_response, new_context = get_response(
+            user_message, 
+            session_name=session_name, 
+            session_context=session_context
+        )
+        # Update session with new context
+        request.session["user_context"] = new_context
     except Exception as e:
         print(f"chat_api error: {e}")
         bot_response = "Sorry, something went wrong on my end!"
